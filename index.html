@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Practice Game</title>
+</head>
+<body>
+    <h1>Tile Level Display</h1>
+    <div id="level"></div>
+
+    <script>
+        // Load the JSON level file
+        fetch('levels/level1.json')
+            .then(response => response.json())
+            .then(data => {
+                const levelDiv = document.getElementById('level');
+                const layer = data.layers[0];          // take the first layer
+                const tiles = layer.data;              // flattened array
+                const width = layer.width;
+
+                for (let y = 0; y < layer.height; y++) {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.style.display = 'flex';
+
+                    for (let x = 0; x < width; x++) {
+                        const tileIndex = y * width + x;
+                        const tile = tiles[tileIndex];
+                        const tileDiv = document.createElement('div');
+                        tileDiv.style.width = '30px';
+                        tileDiv.style.height = '30px';
+                        tileDiv.style.margin = '1px';
+                        tileDiv.style.backgroundColor = tile > 0 ? 'black' : 'white';
+                        rowDiv.appendChild(tileDiv);
+                    }
+
+                    levelDiv.appendChild(rowDiv);
+                }
+            })
+            .catch(err => console.error('Failed to load level:', err));
+    </script>
+</body>
+</html>
